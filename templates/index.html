@@ -17,9 +17,20 @@
 
      <!-- Main Input For Receiving Query to our ML -->
     <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="experience" placeholder="Experience" required="required" />
-        <input type="text" name="test_score" placeholder="Test Score" required="required" />
-		<input type="text" name="interview_score" placeholder="Interview Score" required="required" />
+    	<input type="text" name="radius_mean" placeholder="radius_mean" required="required" />
+        <input type="text" name="texture_mean" placeholder="texture_mean" required="required" />
+	    <input type="text" name="perimeter_mean" placeholder="perimeter_mean" required="required" />
+	    <input type="text" name="area_mean" placeholder="area_mean" required="required" />
+	    <input type="text" name="smoothness_mean" placeholder="smoothness_mean" required="required" />
+	    <input type="text" name="compactness_mean" placeholder="compactness_mean" required="required" />
+	    <input type="text" name="concavity_mean" placeholder="concavity_mean" required="required" />
+	    <input type="text" name="concave points_mean" placeholder="concave points_mean" required="required" />
+	    <input type="text" name="symmetry_mean" placeholder="symmetry_mean" required="required" />
+	    <input type="text" name="fractal_dimension_mean" placeholder="fractal_dimension_mean" required="required" />
+	    <input type="text" name="radius_se" placeholder="radius_se" required="required" />
+	    <input type="text" name="texture_se" placeholder="texture_se" required="required" />
+	    <input type="text" name="perimeter_se" placeholder="perimeter_se" required="required" />
+		<input type="text" name="fractal_dimension_worst" placeholder="fractal_dimension_worst" required="required" />
 
         <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
     </form>
