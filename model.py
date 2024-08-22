@@ -3,37 +3,41 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import pickle
+from sklearn.preprocessing import StandardScaler
 
-dataset = pd.read_csv('hiring.csv')
+dataset = pd.read_csv('C:\\Users\\ptush\Downloads\Breast Cancer Wisconsin (Diagnostic) Data Set.csv')
 
-dataset['experience'].fillna(0, inplace=True)
+dataset['target'] = dataset['diagnosis'].map({'M': 1, 'B': 0})
+X = dataset.drop(columns=['id','diagnosis','target'])
+y = dataset['target']
 
-dataset['test_score'].fillna(dataset['test_score'].mean(), inplace=True)
-
-X = dataset.iloc[:, :3]
-
-#Converting words to integer values
-def convert_to_int(word):
-    word_dict = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8,
-                'nine':9, 'ten':10, 'eleven':11, 'twelve':12, 'zero':0, 0: 0}
-    return word_dict[word]
-
-X['experience'] = X['experience'].apply(lambda x : convert_to_int(x))
-
-y = dataset.iloc[:, -1]
+# Drop columns with all NaN values
+X = X.dropna(how='all', axis=1)
+scaler = StandardScaler()
+X = np.array(scaler.fit_transform(X), dtype=np.float64)
 
 #Splitting Training and Test Set
 #Since we have a very small dataset, we will train our model with all availabe data.
 
-from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()
+from sklearn.linear_model import LogisticRegression
+# Logistic Regression Model
+log_reg_model = LogisticRegression(max_iter=5000, random_state=42)
+log_reg_model.fit(X, y)
 
-#Fitting model with trainig data
-regressor.fit(X, y)
 
 # Saving model to disk
-pickle.dump(regressor, open('model.pkl','wb'))
+pickle.dump(log_reg_model, open('model.pkl','wb'))
 
 # Loading model to compare the results
 model = pickle.load(open('model.pkl','rb'))
-print(model.predict([[2, 9, 6]]))
+##print(model.predict([['diagnosis', 'radius_mean', 'texture_mean', 'perimeter_mean',
+##       'area_mean', 'smoothness_mean', 'compactness_mean', 'concavity_mean',
+##       'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+##     'radius_se', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+##       'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se',
+##       'fractal_dimension_se', 'radius_worst', 'texture_worst',
+##       'perimeter_worst', 'area_worst', 'smoothness_worst',
+##       'compactness_worst', 'concavity_worst', 'concave points_worst',
+##       'symmetry_worst', 'fractal_dimension_worst', 'target']]))
+
+print(model.predict([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]]))
